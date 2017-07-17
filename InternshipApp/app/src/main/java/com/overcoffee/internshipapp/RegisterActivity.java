@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.SimpleTimeZone;
@@ -122,7 +123,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 confirmedPwTIL.setErrorEnabled(false);
-                if (!confirmedPwET.getText().toString().equals( passwordET.getText().toString()) ){
+                if (!confirmedPwET.getText().toString().equals(passwordET.getText().toString())) {
                     confirmedPwTIL.setErrorEnabled(true);
                     confirmedPwTIL.setError("password does not match!");
                     confirmedGOOD = false;
@@ -169,9 +170,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this,LoginActivity.class);
-        intent.putExtra("email",emailET.getText().toString());
-        intent.putExtra("pw",passwordET.getText().toString());
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtra("email", emailET.getText().toString());
+        intent.putExtra("pw", passwordET.getText().toString());
         startActivity(intent);
         finish();
     }
@@ -214,7 +215,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     intent.putExtra("gold", goldET.getText().toString());
                     intent.putExtra("silver", silverET.getText().toString());
                     if (pic != null) {
-                        intent.putExtra("pp", pic);
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        pic.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        byte[] bytes = stream.toByteArray();
+                        intent.putExtra("pp", bytes);
                     }
                     startActivity(intent);
                     finish();

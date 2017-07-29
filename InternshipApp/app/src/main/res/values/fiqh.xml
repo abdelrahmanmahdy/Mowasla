@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="fiqh">
-        <item>Abo Hanifa</item>
-        <item>El-Malki</item>
-        <item>El-Shaf ei</item>
-        <item>El-Hanbali</item>
-    </string-array>
-</resources>

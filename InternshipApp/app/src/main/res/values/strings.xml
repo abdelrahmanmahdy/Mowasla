@@ -9,7 +9,7 @@
     <string name="mobile_req">Mobile*</string>
     <string name="confirm_password_req">Confirm password*</string>
     <string name="password_req">Password*</string>
-    <string name="email_req">username@domain*</string>
+    <string name="email_req">Email*</string>
     <string name="name">Name</string>
     <string name="add_change_profile_picture">add/change profile picture</string>
     <string name="title_activity_home">HomeActivity</string>

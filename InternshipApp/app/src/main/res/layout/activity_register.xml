@@ -117,35 +117,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/reg_marginTop" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/reg_marginTop"
-            android:text="@string/select_your_fiqh" />
-
-        <Spinner
-            android:id="@+id/fiqh_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/reg_marginTop"
-            android:entries="@array/fiqh" />
-
-        <EditText
-            android:id="@+id/gold_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/reg_marginTop"
-            android:hint="@string/gold_standard"
-            android:inputType="number" />
-
-        <EditText
-            android:id="@+id/silver_et"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/reg_marginTop"
-            android:hint="@string/silver_standard"
-            android:inputType="number" />
-
         <Button
             android:id="@+id/reg_next_btn"
             style="?android:attr/borderlessButtonStyle"

@@ -11,6 +11,12 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -76,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         email.setText(intent.getStringExtra("email"));
         passwordET.setText(intent.getStringExtra("pw"));
 
@@ -90,9 +96,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.login_btn:
                 if (emailGood && pwGood) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    Backendless.UserService.login(email.getText().toString(),
+                            passwordET.getText().toString(),
+                            new AsyncCallback<BackendlessUser>() {
+                                @Override
+                                public void handleResponse(BackendlessUser response) {
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    intent.putExtra("email", response.getEmail());
+                                    intent.putExtra("name", response.getProperty("name").toString());
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    TextView textView= (TextView) findViewById(R.id.credentials_msg);
+                                    textView.setText("WRONG CREDENTIALS!");
+                                }
+                            }, true);
                 }
                 break;
             case R.id.register_btn:

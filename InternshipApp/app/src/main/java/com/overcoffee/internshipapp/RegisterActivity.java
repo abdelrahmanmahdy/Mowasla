@@ -20,6 +20,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -216,17 +222,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             //TODO: next button logic
             case R.id.reg_next_btn:
                 if (emailGOOD && passwordGOOD && confirmedGOOD && mobileGOOD) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.putExtra("name", nameET.getText().toString());
-                    intent.putExtra("email", emailET.getText().toString());
-                    intent.putExtra("mobile", mobileET.getText().toString());
-                    intent.putExtra("country", country.getSelectedItem().toString());
-                    intent.putExtra("timezone", timezones.getSelectedItem().toString());
-                    if (pic != null) {
-                        intent.putExtra("pp", pic);
-                    }
-                    startActivity(intent);
-                    finish();
+                    BackendlessUser user=new BackendlessUser();
+                    user.setEmail(emailET.getText().toString());
+                    user.setPassword(passwordET.getText().toString());
+                    user.setProperty("name",nameET.getText().toString());
+                    user.setProperty("mobile",mobileET.getText().toString());
+                    Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
+                        @Override
+                        public void handleResponse(BackendlessUser response) {
+                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            intent.putExtra("name", nameET.getText().toString());
+                            intent.putExtra("email", emailET.getText().toString());
+                            intent.putExtra("mobile", mobileET.getText().toString());
+                            if (pic != null) {
+                                intent.putExtra("pp", pic);
+                            }
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void handleFault(BackendlessFault fault) {
+                            Toast.makeText(RegisterActivity.this,"Something went wrong, sorry :S",Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
                 break;
             default:

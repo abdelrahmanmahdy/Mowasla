@@ -74,6 +74,24 @@ public class HomeActivity extends AppCompatActivity
         list = new ArrayList<>();
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
                 "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+                "test test test test test test test test test test test test test test test test test test "));
         recycler_view_adapter = new ResultsAdapter(list, this);
         recycler_view.setAdapter(recycler_view_adapter);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

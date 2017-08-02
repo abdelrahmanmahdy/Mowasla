@@ -248,6 +248,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     user.setPassword(passwordET.getText().toString());
                     user.setProperty("name", nameET.getText().toString());
                     user.setProperty("mobile", mobileET.getText().toString());
+                    user.setProperty("country",country.getSelectedItem().toString());
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {

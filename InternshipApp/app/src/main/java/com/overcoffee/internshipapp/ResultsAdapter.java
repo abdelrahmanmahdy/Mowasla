@@ -5,12 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by hesham on 11/07/2017.
@@ -39,7 +37,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             {
             case 0:
                 return new ResultItemVH(
-                        LayoutInflater.from(context).inflate(R.layout.result_frame, parent, false)
+                        LayoutInflater.from(context).inflate(R.layout.result_frame_small, parent, false)
                 );
             //case 1:
             }
@@ -56,6 +54,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 VH.ET_directions.setText((all_result_items.get(position)).getDirection());
                 VH.ET_estimated_price.setText((all_result_items.get(position)).getEstPrice());
                 VH.ET_estimated_time.setText((all_result_items.get(position)).getEstTime());
+              //  VH.ET_description.setText((all_result_items.get(position)).getDescription());
                 break;
             }
         }
@@ -84,14 +83,16 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView ET_directions;
         private TextView ET_estimated_price;
         private TextView ET_estimated_time;
+      //  private TextView ET_description;
 
         public ResultItemVH(View itemView)
             {
             super(itemView);
 
-            ET_directions = (TextView) itemView.findViewById(R.id.text_directions);
-            ET_estimated_price = (TextView) itemView.findViewById(R.id.text_estimated_price);
-            ET_estimated_time = (TextView) itemView.findViewById(R.id.text_estimated_time);
+            ET_directions = (TextView) itemView.findViewById(R.id.small_text_directions);
+            ET_estimated_price = (TextView) itemView.findViewById(R.id.small_text_estimated_price);
+            ET_estimated_time = (TextView) itemView.findViewById(R.id.small_text_estimated_time);
+          //  ET_description = (TextView) itemView.findViewById(R.id.text_description);
             }
         }
     }
@@ -101,12 +102,15 @@ class ResultItem
     private String direction;
     private String estTime;
     private String estPrice;
+  //  private String description;
 
-    public ResultItem(String direction, String estTime, String estPrice)
+
+    public ResultItem(String direction, String estTime, String estPrice, String description)
         {
         this.direction = direction;
         this.estTime = estTime;
         this.estPrice = estPrice;
+      //  this.description = description;
         }
 
     public String getDirection()
@@ -123,4 +127,9 @@ class ResultItem
         {
         return estPrice;
         }
+
+  /* public String getDescription()
+        {
+        return description;
+        }*/
     }

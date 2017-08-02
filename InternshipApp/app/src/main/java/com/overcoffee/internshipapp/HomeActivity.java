@@ -32,19 +32,21 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         //get data from Intent
         String email = getIntent().getStringExtra("email");
+        String name = getIntent().getStringExtra("name");
         //Finding Views
         nameTV = (TextView) findViewById(R.id.name);
         emailTV = (TextView) findViewById(R.id.email);
         profilePicture = (ImageView) findViewById(R.id.profile_picture);
-        byte[] img=getIntent().getByteArrayExtra("pp");
-        Log.d("zakah","byte array is NULL ? "+ (img!=null));
-        if(img!=null){
-            Bitmap bmp=BitmapFactory.decodeByteArray(img,0,img.length);
-            profilePicture.setImageBitmap(bmp);
-        }
+
+
+        byte[] bytes=getIntent().getByteArrayExtra("pp");
+        Bitmap bmp = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        profilePicture.setImageBitmap(bmp);
+
         navMenuRecyclerView = (RecyclerView) findViewById(R.id.nav_menu_recycler);
         //Setting data to navigation menu
         emailTV.setText(email);
+        nameTV.setText(name);
         //setting Nav Menu Recycler
         String[] texts = new String[]{"Text1", "Text2", "Text3", "Text4", "Text5"};
         NavMenuRecycler recycler = new NavMenuRecycler(texts, this);

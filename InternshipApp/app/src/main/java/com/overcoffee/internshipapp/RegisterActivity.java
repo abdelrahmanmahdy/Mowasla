@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
@@ -39,9 +40,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button next;
     EditText nameET, emailET, passwordET, confirmedPwET, mobileET;
     TextInputLayout emailTIL, pwTIL, confirmedPwTIL, mobileTIL;
-    Spinner country, timezones;
+    Spinner country;
     boolean emailGOOD, passwordGOOD, confirmedGOOD, mobileGOOD;
-    Uri pic;
 
     public static final int GET_FROM_GALLERY = 3;
     public static final int GET_FROM_CAMERA = 4;
@@ -67,11 +67,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         mobileTIL = (TextInputLayout) findViewById(R.id.mob_reg_et_layout);
         //SPINNERS
         country = (Spinner) findViewById(R.id.country_spinner);
-        timezones = (Spinner) findViewById(R.id.time_zone_spinner);
 
         emailGOOD = passwordGOOD = confirmedGOOD = mobileGOOD = false;
-
-        fillTimeZoneSpinner();
 
         Intent intent = getIntent();
 
@@ -84,12 +81,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String emailIn = emailET.getText().toString();
-                emailTIL.setErrorEnabled(false);
+                if(emailIn.isEmpty()){
+                    emailGOOD=false;
+                    emailTIL.setErrorEnabled(false);
+                }else
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailIn).matches()) {
                     emailTIL.setErrorEnabled(true);
                     emailTIL.setError("Wrong email format!");
                     emailGOOD = false;
-                } else emailGOOD = true;
+                } else {
+                    emailTIL.setErrorEnabled(false);
+                    emailGOOD = true;
+                }
             }
 
             @Override
@@ -106,12 +109,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String password = passwordET.getText().toString();
-                pwTIL.setErrorEnabled(false);
+                if(password.isEmpty()){
+                    passwordGOOD=false;
+                    pwTIL.setErrorEnabled(false);
+                }else
                 if (password.length() < 8) {
                     pwTIL.setErrorEnabled(true);
                     pwTIL.setError("Password too short!");
                     passwordGOOD = false;
-                } else passwordGOOD = true;
+                } else {
+                    pwTIL.setErrorEnabled(false);
+                    passwordGOOD = true;
+                }
             }
 
             @Override
@@ -127,12 +136,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                confirmedPwTIL.setErrorEnabled(false);
+
+                if(confirmedPwET.getText().toString().isEmpty()){
+                    confirmedGOOD=false;
+                    confirmedPwTIL.setErrorEnabled(false);
+                }else
                 if (!confirmedPwET.getText().toString().equals(passwordET.getText().toString())) {
                     confirmedPwTIL.setErrorEnabled(true);
                     confirmedPwTIL.setError("password does not match!");
                     confirmedGOOD = false;
-                } else confirmedGOOD = true;
+                } else {
+                    confirmedPwTIL.setErrorEnabled(false);
+                    confirmedGOOD = true;
+                }
             }
 
             @Override
@@ -148,12 +164,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mobileTIL.setErrorEnabled(false);
+                if(mobileET.getText().toString().isEmpty()){
+                    mobileGOOD=false;
+                    mobileTIL.setErrorEnabled(false);
+                }else
                 if (!Patterns.PHONE.matcher(mobileET.getText().toString()).matches()) {
                     mobileTIL.setErrorEnabled(true);
                     mobileTIL.setError("wrong format!");
                     mobileGOOD = false;
-                } else mobileGOOD = true;
+                } else {
+                    mobileTIL.setErrorEnabled(false);
+                    mobileGOOD = true;
+                }
             }
 
             @Override
@@ -187,11 +209,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            pic = data.getData();
-            pp.setImageURI(pic);
+            pp.setImageURI(data.getData());
         }
-        if(requestCode==GET_FROM_CAMERA && requestCode==Activity.RESULT_OK){
-            Bitmap bitmap=(Bitmap)data.getExtras().get("data");
+        if (requestCode == GET_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             pp.setImageBitmap(bitmap);
         }
     }
@@ -205,28 +226,28 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 alertDialog.setPositiveButton("camera", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent= new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent,GET_FROM_CAMERA);
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(intent, GET_FROM_CAMERA);
                     }
                 });
                 alertDialog.setNegativeButton("Gallery", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent=new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                         startActivityForResult(intent, GET_FROM_GALLERY);
                     }
                 });
-                AlertDialog dialog=alertDialog.create();
+                AlertDialog dialog = alertDialog.create();
                 dialog.show();
                 break;
             //TODO: next button logic
             case R.id.reg_next_btn:
                 if (emailGOOD && passwordGOOD && confirmedGOOD && mobileGOOD) {
-                    BackendlessUser user=new BackendlessUser();
+                    BackendlessUser user = new BackendlessUser();
                     user.setEmail(emailET.getText().toString());
                     user.setPassword(passwordET.getText().toString());
-                    user.setProperty("name",nameET.getText().toString());
-                    user.setProperty("mobile",mobileET.getText().toString());
+                    user.setProperty("name", nameET.getText().toString());
+                    user.setProperty("mobile", mobileET.getText().toString());
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
@@ -234,27 +255,22 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             intent.putExtra("name", nameET.getText().toString());
                             intent.putExtra("email", emailET.getText().toString());
                             intent.putExtra("mobile", mobileET.getText().toString());
-                            if (pic != null) {
-                                intent.putExtra("pp", pic);
-                            }
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            ((BitmapDrawable) pp.getDrawable()).getBitmap().compress(Bitmap.CompressFormat.PNG,100,stream);
+                            byte[] bytes=stream.toByteArray();
+                            intent.putExtra("pp", bytes);
                             startActivity(intent);
                             finish();
                         }
 
                         @Override
                         public void handleFault(BackendlessFault fault) {
-                            Toast.makeText(RegisterActivity.this,"Something went wrong, sorry :S",Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegisterActivity.this, fault.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     });
                 }
                 break;
             default:
         }
-    }
-
-    private void fillTimeZoneSpinner() {
-        String[] ids = TimeZone.getAvailableIDs();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, ids);
-        timezones.setAdapter(adapter);
     }
 }

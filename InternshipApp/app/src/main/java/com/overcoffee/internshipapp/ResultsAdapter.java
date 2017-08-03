@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             {
             case 0:
                 return new ResultItemVH(
-                        LayoutInflater.from(context).inflate(R.layout.result_frame_small, parent, false)
+                        LayoutInflater.from(context).inflate(R.layout.result_frame_big, parent, false)
                 );
             //case 1:
             }
@@ -54,7 +56,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 VH.ET_directions.setText((all_result_items.get(position)).getDirection());
                 VH.ET_estimated_price.setText((all_result_items.get(position)).getEstPrice());
                 VH.ET_estimated_time.setText((all_result_items.get(position)).getEstTime());
-              //  VH.ET_description.setText((all_result_items.get(position)).getDescription());
+                VH.ET_description.setText((all_result_items.get(position)).getDescription());
                 break;
             }
         }
@@ -80,19 +82,39 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     class ResultItemVH extends RecyclerView.ViewHolder
         {
+        private LinearLayout text_description_layout;
         private TextView ET_directions;
         private TextView ET_estimated_price;
         private TextView ET_estimated_time;
-      //  private TextView ET_description;
+        private TextView ET_description;
 
         public ResultItemVH(View itemView)
             {
             super(itemView);
 
-            ET_directions = (TextView) itemView.findViewById(R.id.small_text_directions);
-            ET_estimated_price = (TextView) itemView.findViewById(R.id.small_text_estimated_price);
-            ET_estimated_time = (TextView) itemView.findViewById(R.id.small_text_estimated_time);
-          //  ET_description = (TextView) itemView.findViewById(R.id.text_description);
+            ET_directions = (TextView) itemView.findViewById(R.id.text_directions);
+            ET_estimated_price = (TextView) itemView.findViewById(R.id.text_estimated_price);
+            ET_estimated_time = (TextView) itemView.findViewById(R.id.text_estimated_time);
+            ET_description = (TextView) itemView.findViewById(R.id.text_description);
+            text_description_layout = (LinearLayout) itemView.findViewById(R.id.text_description_layout);
+
+            FrameLayout layout = (FrameLayout) itemView.findViewById(R.id.result_layout);
+
+            layout.setOnClickListener(new View.OnClickListener()
+                {
+                @Override
+                public void onClick(View v)
+                    {
+                    if (text_description_layout.isShown())
+                        {
+                        text_description_layout.setVisibility(View.GONE);
+                        } else
+                        {
+                        text_description_layout.setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
             }
         }
     }
@@ -102,7 +124,7 @@ class ResultItem
     private String direction;
     private String estTime;
     private String estPrice;
-  //  private String description;
+    private String description;
 
 
     public ResultItem(String direction, String estTime, String estPrice, String description)
@@ -110,7 +132,7 @@ class ResultItem
         this.direction = direction;
         this.estTime = estTime;
         this.estPrice = estPrice;
-      //  this.description = description;
+        this.description = description;
         }
 
     public String getDirection()
@@ -128,8 +150,8 @@ class ResultItem
         return estPrice;
         }
 
-  /* public String getDescription()
+    public String getDescription()
         {
         return description;
-        }*/
+        }
     }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +35,9 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView recycler_view;
     private RecyclerView.Adapter recycler_view_adapter;
     private List list;
+
+    Fragment f;
+    FragmentManager fm;
 
     protected void onCreate(Bundle savedInstanceState)
         {

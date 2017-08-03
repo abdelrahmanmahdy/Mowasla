@@ -35,10 +35,10 @@ public class ResultsActivity extends AppCompatActivity
 
         //creation of random paths
         list = new ArrayList<>();
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE"));
-        list.add(new ResultItem("maadi to new cairo", "23 minuites", "15 LE"));
-        list.add(new ResultItem("maadi to blablablablablabla", "52 minuites", "2 LE"));
-        list.add(new ResultItem("maadi to blablabla", "30 minuites", "45 LE"));
+        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE",""));
+        list.add(new ResultItem("maadi to new cairo", "23 minuites", "15 LE",""));
+        list.add(new ResultItem("maadi to blablablablablabla", "52 minuites", "2 LE",""));
+        list.add(new ResultItem("maadi to blablabla", "30 minuites", "45 LE",""));
 
         recycler_view_adapter = new ResultsAdapter(list, this);
         recycler_view.setAdapter(recycler_view_adapter);

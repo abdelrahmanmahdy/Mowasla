@@ -14,28 +14,38 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.backendless.Backendless;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
+import com.backendless.persistence.BackendlessDataQuery;
+import com.backendless.persistence.DataQueryBuilder;
+import com.overcoffee.internshipapp.Beans.Routes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
-public class HomeActivity extends AppCompatActivity
-    {
+public class HomeActivity extends AppCompatActivity {
     TextView nameTV, emailTV;
     RecyclerView navMenuRecyclerView;
     Toolbar toolbar;
     TextView title;
     ImageView profilePicture;
     DrawerLayout mDrawerLayout;
+    Spinner from_spinner, to_spinner;
 
     private RecyclerView recycler_view;
     private RecyclerView.Adapter recycler_view_adapter;
     private List list;
 
-    protected void onCreate(Bundle savedInstanceState)
-        {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //get data from Intent
@@ -44,13 +54,15 @@ public class HomeActivity extends AppCompatActivity
         nameTV = (TextView) findViewById(R.id.name);
         emailTV = (TextView) findViewById(R.id.email);
         profilePicture = (ImageView) findViewById(R.id.profile_picture);
+        from_spinner = (Spinner) findViewById(R.id.from_spinner);
+        to_spinner = (Spinner) findViewById(R.id.to_spinner);
+
+
         byte[] img = getIntent().getByteArrayExtra("pp");
-        Log.d("zakah", "byte array is NULL ? " + (img != null));
-        if (img != null)
-            {
+        if (img != null) {
             Bitmap bmp = BitmapFactory.decodeByteArray(img, 0, img.length);
             profilePicture.setImageBitmap(bmp);
-            }
+        }
         navMenuRecyclerView = (RecyclerView) findViewById(R.id.nav_menu_recycler);
         //Setting data to navigation menu
         emailTV.setText(email);
@@ -62,6 +74,39 @@ public class HomeActivity extends AppCompatActivity
         //activate custom action bar
         setupActionBar();
         setupDrawer();
+//        setupFromSpinner();
+        from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                String selected = adapterView.getItemAtPosition(i).toString();
+                DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+                queryBuilder.setWhereClause("from = "+selected);
+                Backendless.Persistence.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>() {
+                    @Override
+                    public void handleResponse(List<Routes> response) {
+                        List<String> strings=new ArrayList<String>();
+                        for(Routes route : response){
+                            strings.add(route.to);
+                        }
+                        ArrayAdapter<String> adapter=new ArrayAdapter<String>(HomeActivity.this,
+                                android.R.layout.simple_spinner_item,strings);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        to_spinner.setAdapter(adapter);
+
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,72 +142,82 @@ public class HomeActivity extends AppCompatActivity
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        }
+    }
 
-    public void setupDrawer()
-        {
+    public void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        }
+    }
 
-    public void setupActionBar()
-        {
+    public void setupActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         title = (TextView) toolbar.findViewById(R.id.toolbar_text);
         title.setText("Home");
         setSupportActionBar(toolbar);
-        }
+    }
 
-    private class NavMenuRecycler extends RecyclerView.Adapter<NavMenuVH>
-        {
+    private void setupFromSpinner() {
+        Backendless.Persistence.of(Routes.class).find(new AsyncCallback<List<Routes>>() {
+            @Override
+            public void handleResponse(List<Routes> response) {
+                String[] locations = new String[response.size()];
+                for(int i=0;i<response.size();i++){
+                    locations[i]=response.get(i).from;
+                }
+                ArrayAdapter<String> adapter=new ArrayAdapter<String>(HomeActivity.this,android.R.layout.simple_spinner_item,locations);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                from_spinner.setAdapter(adapter);
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
+    }
+
+    private class NavMenuRecycler extends RecyclerView.Adapter<NavMenuVH> {
         String[] recyclerItems;
         LayoutInflater inflater;
 
-        NavMenuRecycler(String[] items, Context context)
-            {
+        NavMenuRecycler(String[] items, Context context) {
             recyclerItems = Arrays.copyOf(items, items.length);
             inflater = LayoutInflater.from(context);
-            }
-
-        @Override
-        public NavMenuVH onCreateViewHolder(ViewGroup parent, int viewType)
-            {
-            NavMenuVH view = new NavMenuVH(inflater.inflate(R.layout.side_menu_item, parent, false));
-            return view;
-            }
-
-        @Override
-        public void onBindViewHolder(NavMenuVH holder, int position)
-            {
-            holder.textView.setText(recyclerItems[position]);
-            }
-
-        @Override
-        public int getItemCount()
-            {
-            return recyclerItems.length;
-            }
         }
 
-    private class NavMenuVH extends RecyclerView.ViewHolder implements View.OnClickListener
-        {
+        @Override
+        public NavMenuVH onCreateViewHolder(ViewGroup parent, int viewType) {
+            NavMenuVH view = new NavMenuVH(inflater.inflate(R.layout.side_menu_item, parent, false));
+            return view;
+        }
+
+        @Override
+        public void onBindViewHolder(NavMenuVH holder, int position) {
+            holder.textView.setText(recyclerItems[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return recyclerItems.length;
+        }
+    }
+
+    private class NavMenuVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textView;
 
-        NavMenuVH(View itemView)
-            {
+        NavMenuVH(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text1);
             itemView.setOnClickListener(this);
-            }
+        }
 
         @Override
-        public void onClick(View v)
-            {
+        public void onClick(View v) {
             title.setText(textView.getText());
-            }
         }
     }
+}

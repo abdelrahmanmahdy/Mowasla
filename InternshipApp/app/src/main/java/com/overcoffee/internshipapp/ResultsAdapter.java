@@ -122,7 +122,6 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         arrowup.setVisibility(View.VISIBLE);
                         arrowdown.setVisibility(View.GONE);
                         }
-
                     }
                 });
             }

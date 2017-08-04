@@ -36,9 +36,6 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView.Adapter recycler_view_adapter;
     private List list;
 
-    Fragment f;
-    FragmentManager fm;
-
     protected void onCreate(Bundle savedInstanceState)
         {
         super.onCreate(savedInstanceState);

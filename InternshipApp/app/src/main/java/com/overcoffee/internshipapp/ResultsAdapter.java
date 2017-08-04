@@ -58,6 +58,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 VH.ET_estimated_price.setText((all_result_items.get(position)).getEstPrice());
                 VH.ET_estimated_time.setText((all_result_items.get(position)).getEstTime());
                 VH.ET_description.setText((all_result_items.get(position)).getDescription());
+                VH.avg_rating.setText((all_result_items.get(position)).getAvg_rating());
                 break;
             }
         }
@@ -88,6 +89,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView ET_estimated_price;
         private TextView ET_estimated_time;
         private TextView ET_description;
+        private TextView avg_rating;
         private ImageView arrowup;
         private ImageView arrowdown;
 
@@ -100,6 +102,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ET_estimated_price = (TextView) itemView.findViewById(R.id.text_estimated_price);
             ET_estimated_time = (TextView) itemView.findViewById(R.id.text_estimated_time);
             ET_description = (TextView) itemView.findViewById(R.id.text_description);
+            avg_rating = (TextView) itemView.findViewById(R.id.avg_rating);
+
             text_description_layout = (LinearLayout) itemView.findViewById(R.id.text_description_layout);
             arrowup = (ImageView) itemView.findViewById(R.id.arrowup);
             arrowdown = (ImageView) itemView.findViewById(R.id.arrowdown);
@@ -134,14 +138,15 @@ class ResultItem
     private String estTime;
     private String estPrice;
     private String description;
+    private String avg_rating;
 
-
-    public ResultItem(String direction, String estTime, String estPrice, String description)
+    public ResultItem(String direction, String estTime, String estPrice, String description, String avg_rating)
         {
         this.direction = direction;
         this.estTime = estTime;
         this.estPrice = estPrice;
         this.description = description;
+        this.avg_rating = avg_rating;
         }
 
     public String getDirection()
@@ -162,5 +167,10 @@ class ResultItem
     public String getDescription()
         {
         return description;
+        }
+
+    public String getAvg_rating()
+        {
+        return avg_rating;
         }
     }

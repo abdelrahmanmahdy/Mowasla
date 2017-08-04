@@ -144,7 +144,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50dp"
-                android:text="Average Rating"/>
+                android:text="Average Rating:"/>
+            <TextView
+                android:id="@+id/avg_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
 
     </LinearLayout>

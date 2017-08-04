@@ -1,10 +1,12 @@
 package com.overcoffee.internshipapp.Beans;
 
+import java.io.Serializable;
+
 /**
  * Created by AbdelRahmanTarek on 8/3/17.
  */
 
-public class Routes {
+public class Routes implements Serializable{
     public String by_user;
     public String description;
     public double distance;
@@ -14,6 +16,10 @@ public class Routes {
     public int time;
     public String title;
     public String objectId;
+
+    public Routes(){
+
+    }
 
     public Routes(String by_user, String description, double distance, double fare, String from, String to, int time, String title, String objectId) {
         this.by_user = by_user;

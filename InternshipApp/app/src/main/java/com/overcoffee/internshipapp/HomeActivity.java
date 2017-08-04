@@ -74,13 +74,13 @@ public class HomeActivity extends AppCompatActivity {
         //activate custom action bar
         setupActionBar();
         setupDrawer();
-//        setupFromSpinner();
+        setupFromSpinner();
         from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected = adapterView.getItemAtPosition(i).toString();
                 DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-                queryBuilder.setWhereClause("from = "+selected);
+                queryBuilder.setWhereClause("from = '"+selected+"'");
                 Backendless.Persistence.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>() {
                     @Override
                     public void handleResponse(List<Routes> response) {
@@ -97,7 +97,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void handleFault(BackendlessFault fault) {
-
+                        Log.d("MOWASLA",fault.getMessage());
                     }
                 });
             }
@@ -161,7 +161,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupFromSpinner() {
-        Backendless.Persistence.of(Routes.class).find(new AsyncCallback<List<Routes>>() {
+        DataQueryBuilder builder = DataQueryBuilder.create();
+
+        Backendless.Data.of(Routes.class).find(new AsyncCallback<List<Routes>>() {
             @Override
             public void handleResponse(List<Routes> response) {
                 String[] locations = new String[response.size()];

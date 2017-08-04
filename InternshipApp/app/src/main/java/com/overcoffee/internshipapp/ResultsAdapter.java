@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -87,6 +88,9 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView ET_estimated_price;
         private TextView ET_estimated_time;
         private TextView ET_description;
+        private ImageView arrowup;
+        private ImageView arrowdown;
+
 
         public ResultItemVH(View itemView)
             {
@@ -97,6 +101,8 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             ET_estimated_time = (TextView) itemView.findViewById(R.id.text_estimated_time);
             ET_description = (TextView) itemView.findViewById(R.id.text_description);
             text_description_layout = (LinearLayout) itemView.findViewById(R.id.text_description_layout);
+            arrowup = (ImageView) itemView.findViewById(R.id.arrowup);
+            arrowdown = (ImageView) itemView.findViewById(R.id.arrowdown);
 
             FrameLayout layout = (FrameLayout) itemView.findViewById(R.id.result_layout);
 
@@ -106,11 +112,15 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 public void onClick(View v)
                     {
                     if (text_description_layout.isShown())
-                        {
+                        {//hiding
                         text_description_layout.setVisibility(View.GONE);
+                        arrowup.setVisibility(View.GONE);
+                        arrowdown.setVisibility(View.VISIBLE);
                         } else
                         {
                         text_description_layout.setVisibility(View.VISIBLE);
+                        arrowup.setVisibility(View.VISIBLE);
+                        arrowdown.setVisibility(View.GONE);
                         }
 
                     }

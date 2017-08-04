@@ -11,6 +11,12 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
+import com.backendless.async.callback.AsyncCallback;
+import com.backendless.exceptions.BackendlessFault;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,12 +47,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String emailIn = email.getText().toString();
-                emailTIL.setErrorEnabled(false);
+                if(emailIn.isEmpty()){
+                    emailGood=false;
+                    emailTIL.setErrorEnabled(false);
+                }else
                 if (!Patterns.EMAIL_ADDRESS.matcher(emailIn).matches()) {
                     emailTIL.setErrorEnabled(true);
                     emailTIL.setError("Wrong email format!");
                     emailGood = false;
-                } else emailGood = true;
+                } else {
+                    emailTIL.setErrorEnabled(false);
+                    emailGood = true;
+                }
             }
 
             @Override
@@ -63,12 +75,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String password = passwordET.getText().toString();
-                passwordTIL.setErrorEnabled(false);
+                if(password.isEmpty()){
+                    pwGood=false;
+                    passwordTIL.setErrorEnabled(false);
+                }else
                 if (password.length() < 8) {
                     passwordTIL.setErrorEnabled(true);
                     passwordTIL.setError("Password too short!");
                     pwGood = false;
-                } else pwGood = true;
+                } else {
+                    passwordTIL.setErrorEnabled(false);
+                    pwGood = true;
+                }
             }
 
             @Override
@@ -76,7 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
-        Intent intent=getIntent();
+        Intent intent = getIntent();
         email.setText(intent.getStringExtra("email"));
         passwordET.setText(intent.getStringExtra("pw"));
 
@@ -90,9 +108,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.login_btn:
                 if (emailGood && pwGood) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    startActivity(intent);
-                    finish();
+                    Backendless.UserService.login(email.getText().toString(),
+                            passwordET.getText().toString(),
+                            new AsyncCallback<BackendlessUser>() {
+                                @Override
+                                public void handleResponse(BackendlessUser response) {
+                                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    intent.putExtra("email", response.getEmail());
+                                    intent.putExtra("name", response.getProperty("name").toString());
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                                @Override
+                                public void handleFault(BackendlessFault fault) {
+                                    TextView textView= (TextView) findViewById(R.id.credentials_msg);
+                                    textView.setText(fault.getMessage());
+                                }
+                            }, true);
                 }
                 break;
             case R.id.register_btn:

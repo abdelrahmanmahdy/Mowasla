@@ -55,7 +55,7 @@ public class ResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             case 0:
                 ResultItemVH VH = (ResultItemVH) holder;
                 VH.ET_directions.setText((all_result_items.get(position)).getDirection());
-                VH.ET_estimated_price.setText((all_result_items.get(position)).getEstPrice());
+                VH.ET_estimated_price.setText( (all_result_items.get(position)).getEstPrice());
                 VH.ET_estimated_time.setText((all_result_items.get(position)).getEstTime());
                 VH.ET_description.setText((all_result_items.get(position)).getDescription());
                 VH.avg_rating.setText((all_result_items.get(position)).getAvg_rating());

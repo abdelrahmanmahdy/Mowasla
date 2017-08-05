@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -108,7 +110,6 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //test the results creation///////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,25 +119,22 @@ public class HomeActivity extends AppCompatActivity {
         //creation of random paths
         list = new ArrayList<>();
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "3/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "2/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "5/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "3/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "4/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "3/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "2/5"));
         list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test "));
+                "test test test test test test test test test test test test test test test test test test", "1/5"));
+
         recycler_view_adapter = new ResultsAdapter(list, this);
         recycler_view.setAdapter(recycler_view_adapter);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

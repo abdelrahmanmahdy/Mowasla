@@ -1,6 +1,7 @@
 package com.overcoffee.internshipapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,17 +33,21 @@ import com.overcoffee.internshipapp.Beans.Routes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     TextView nameTV, emailTV;
     RecyclerView navMenuRecyclerView;
     Toolbar toolbar;
-    TextView title;
+    TextView title,test1j;
     ImageView profilePicture;
     DrawerLayout mDrawerLayout;
     Spinner from_spinner, to_spinner;
+    Button resultbutton;
+
 
     private RecyclerView recycler_view;
     private RecyclerView.Adapter recycler_view_adapter;
@@ -58,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
         profilePicture = (ImageView) findViewById(R.id.profile_picture);
         from_spinner = (Spinner) findViewById(R.id.from_spinner);
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
-
+        resultbutton=(Button) findViewById(R.id.searchbutton);
 
         byte[] img = getIntent().getByteArrayExtra("pp");
         if (img != null) {
@@ -77,6 +83,7 @@ public class HomeActivity extends AppCompatActivity {
         setupActionBar();
         setupDrawer();
         setupFromSpinner();
+        resultbutton.setOnClickListener(this);
         from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -86,10 +93,13 @@ public class HomeActivity extends AppCompatActivity {
                 Backendless.Persistence.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>() {
                     @Override
                     public void handleResponse(List<Routes> response) {
-                        List<String> strings=new ArrayList<String>();
+                        Set<String>  Dupstrings= new HashSet<>();
                         for(Routes route : response){
-                            strings.add(route.to);
+                            Dupstrings.add(route.to);
+
                         }
+                            List<String> strings=new ArrayList<String>();
+                        strings.addAll(Dupstrings);
                         ArrayAdapter<String> adapter=new ArrayAdapter<String>(HomeActivity.this,
                                 android.R.layout.simple_spinner_item,strings);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -110,37 +120,44 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //test the results creation///////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         recycler_view = (RecyclerView) findViewById(R.id.recycler1);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         //creation of random paths
-        list = new ArrayList<>();
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "3/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "2/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "5/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "3/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "4/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "3/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "2/5"));
-        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-                "test test test test test test test test test test test test test test test test test test", "1/5"));
+    //    list = new ArrayList<>();
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "3/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "2/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "5/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "3/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "4/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "3/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "2/5"));
+//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
+//                "test test test test test test test test test test test test test test test test test test", "1/5"));
 
-        recycler_view_adapter = new ResultsAdapter(list, this);
-        recycler_view.setAdapter(recycler_view_adapter);
+   //     recycler_view_adapter = new ResultsAdapter(list, this);
+      //  recycler_view.setAdapter(recycler_view_adapter);
+   //     String   SelectedFrom=from_spinner.getSelectedItem().toString();
+     //   String SelectedTo=to_spinner.getSelectedItem().toString();
+
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
+
 
     public void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
@@ -154,7 +171,7 @@ public class HomeActivity extends AppCompatActivity {
     public void setupActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         title = (TextView) toolbar.findViewById(R.id.toolbar_text);
-        title.setText("Home");
+        title.setText("Mowasla");
         setSupportActionBar(toolbar);
     }
 
@@ -164,10 +181,15 @@ public class HomeActivity extends AppCompatActivity {
         Backendless.Data.of(Routes.class).find(new AsyncCallback<List<Routes>>() {
             @Override
             public void handleResponse(List<Routes> response) {
-                String[] locations = new String[response.size()];
+
+                Set<String>  locationsSet= new HashSet<>();
                 for(int i=0;i<response.size();i++){
-                    locations[i]=response.get(i).from;
+                    locationsSet.add(response.get(i).from);
                 }
+                  ////remove duplicates
+                List<String> locations=new ArrayList<String>();
+                locations.addAll(locationsSet);
+                locationsSet.toString();
                 ArrayAdapter<String> adapter=new ArrayAdapter<String>(HomeActivity.this,android.R.layout.simple_spinner_item,locations);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 from_spinner.setAdapter(adapter);
@@ -178,6 +200,44 @@ public class HomeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onClick(View view) {
+
+     String   SelectedFrom=from_spinner.getSelectedItem().toString();
+         String SelectedTo=to_spinner.getSelectedItem().toString();
+
+
+        DataQueryBuilder builder = DataQueryBuilder.create();
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause("from = '"+SelectedFrom+"' AND to='" +SelectedTo+ "'" );
+        list = new ArrayList<>();
+        Backendless.Data.of(Routes.class).find(queryBuilder,new AsyncCallback<List<Routes>>() {
+            @Override
+            public void handleResponse(List<Routes> response) {
+
+                Set<String>  locationsSet= new HashSet<>();
+                for(int i=0;i<response.size();i++){
+                    locationsSet.add(response.get(i).title);
+                    list.add(new ResultItem(response.get(i).title, String.valueOf(response.get(i).time),String.valueOf( response.get(i).fare), response.get(i).description ,"test" ));
+
+                }
+
+                           recycler_view_adapter = new ResultsAdapter(list,HomeActivity.this);
+                          recycler_view.setAdapter(recycler_view_adapter);
+
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
+
+
+
+
     }
 
     private class NavMenuRecycler extends RecyclerView.Adapter<NavMenuVH> {

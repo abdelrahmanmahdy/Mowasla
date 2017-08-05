@@ -220,7 +220,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Set<String>  locationsSet= new HashSet<>();
                 for(int i=0;i<response.size();i++){
                     locationsSet.add(response.get(i).title);
-                    list.add(new ResultItem(response.get(i).title, String.valueOf(response.get(i).time),String.valueOf( response.get(i).fare), response.get(i).description ,"test" ));
+                    list.add(new ResultItem(response.get(i).title, String.valueOf(response.get(i).time)+" min",String.valueOf( response.get(i).fare)+" L.E", response.get(i).description ,"test" ));
 
                 }
 

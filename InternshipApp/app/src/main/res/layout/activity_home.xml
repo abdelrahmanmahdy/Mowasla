@@ -17,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="#189d6e">
-
             <TextView
                 android:id="@+id/toolbar_text"
                 android:layout_width="wrap_content"
@@ -39,12 +38,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
                 android:text="Start Location"/>
 
             <android.support.v7.widget.AppCompatSpinner
                 android:layout_width="200dp"
                 android:id="@+id/from_spinner"
-                android:layout_height="wrap_content"
+                android:background="#189d6e"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
                 >
 
             </android.support.v7.widget.AppCompatSpinner>
@@ -53,18 +56,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
                 android:text="Destination"/>
 
             <android.support.v7.widget.AppCompatSpinner
                 android:layout_width="200dp"
                 android:id="@+id/to_spinner"
-                android:layout_height="wrap_content"
+                android:background="#189d6e"
+                android:layout_height="40dp"
                 >
 
             </android.support.v7.widget.AppCompatSpinner>
 
             <Button
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
+                android:id="@+id/searchbutton"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Search routes"/>

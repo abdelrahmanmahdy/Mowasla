@@ -40,8 +40,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener
-    {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
     TextView nameTV, emailTV;
     RecyclerView navMenuRecyclerView;
     Toolbar toolbar;
@@ -51,13 +50,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     Spinner from_spinner, to_spinner;
     Button resultbutton;
 
-    private String username;
     private RecyclerView recycler_view;
     private RecyclerView.Adapter recycler_view_adapter;
     private List list;
 
-    protected void onCreate(Bundle savedInstanceState)
-        {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //get data from Intent
@@ -70,37 +67,35 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
         resultbutton = (Button) findViewById(R.id.searchbutton);
 
-            DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-            queryBuilder.setWhereClause("email = '" + email + "' ");
-            Backendless.Data.of(Users.class).find(queryBuilder, new AsyncCallback<List<Users>>()
-            {
-                @Override
-                public void handleResponse(List<Users> response)
-                {
-                    username = response.get(0).name;
-                }
+        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        queryBuilder.setWhereClause("email = '" + email + "' ");
+        Backendless.Data.of(Users.class).find(queryBuilder, new AsyncCallback<List<Users>>() {
+            @Override
+            public void handleResponse(List<Users> response) {
 
-                @Override
-                public void handleFault(BackendlessFault fault)
-                {
-                    Intent intent = new Intent(HomeActivity.this,SplashActivity.class);
-                    startActivity(intent);
-                }
-            });
+                nameTV.setText(response.get(0).name);
+                Log.d("MOWASLA", " " + response.size());
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
-            byte[] img = getIntent().getByteArrayExtra("pp");
-        if (img != null)
-            {
+        byte[] img = getIntent().getByteArrayExtra("pp");
+        if (img != null) {
             Bitmap bmp = BitmapFactory.decodeByteArray(img, 0, img.length);
             profilePicture.setImageBitmap(bmp);
-            }
+        }
         navMenuRecyclerView = (RecyclerView) findViewById(R.id.nav_menu_recycler);
         //Setting data to navigation menu
         emailTV.setText(email);
-        nameTV.setText(username);
+
         //setting Nav Menu Recycler
-        String[] texts = new String[]{"AddRoute","Settings","Logout"};
+        String[] texts = new String[]{"AddRoute", "Settings", "Logout"};
         NavMenuRecycler recycler = new NavMenuRecycler(texts, this);
         navMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         navMenuRecyclerView.setAdapter(recycler);
@@ -109,25 +104,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         setupDrawer();
         setupFromSpinner();
         resultbutton.setOnClickListener(this);
-        from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
+        from_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-                {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selected = adapterView.getItemAtPosition(i).toString();
                 DataQueryBuilder queryBuilder = DataQueryBuilder.create();
                 queryBuilder.setWhereClause("from = '" + selected + "'");
-                Backendless.Persistence.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>()
-                    {
+                Backendless.Persistence.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>() {
                     @Override
-                    public void handleResponse(List<Routes> response)
-                        {
+                    public void handleResponse(List<Routes> response) {
                         Set<String> Dupstrings = new HashSet<>();
-                        for (Routes route : response)
-                            {
+                        for (Routes route : response) {
                             Dupstrings.add(route.to);
 
-                            }
+                        }
                         List<String> strings = new ArrayList<String>();
                         strings.addAll(Dupstrings);
                         ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this,
@@ -135,22 +125,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         to_spinner.setAdapter(adapter);
 
-                        }
+                    }
 
                     @Override
-                    public void handleFault(BackendlessFault fault)
-                        {
+                    public void handleFault(BackendlessFault fault) {
                         Log.d("MOWASLA", fault.getMessage());
-                        }
-                    });
-                }
+                    }
+                });
+            }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-                {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                }
-            });
+            }
+        });
 
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -187,41 +175,35 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        }
+    }
 
-    public void setupDrawer()
-        {
+    public void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.mDrawerLayout);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         ActionBarDrawerToggle drawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(drawerToggle);
         drawerToggle.syncState();
-        }
+    }
 
-    public void setupActionBar()
-        {
+    public void setupActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         title = (TextView) toolbar.findViewById(R.id.toolbar_text);
         title.setText("Mowasla");
         setSupportActionBar(toolbar);
-        }
+    }
 
-    private void setupFromSpinner()
-        {
+    private void setupFromSpinner() {
         DataQueryBuilder builder = DataQueryBuilder.create();
 
-        Backendless.Data.of(Routes.class).find(new AsyncCallback<List<Routes>>()
-            {
+        Backendless.Data.of(Routes.class).find(new AsyncCallback<List<Routes>>() {
             @Override
-            public void handleResponse(List<Routes> response)
-                {
+            public void handleResponse(List<Routes> response) {
 
                 Set<String> locationsSet = new HashSet<>();
-                for (int i = 0; i < response.size(); i++)
-                    {
+                for (int i = 0; i < response.size(); i++) {
                     locationsSet.add(response.get(i).from);
-                    }
+                }
                 ////remove duplicates
                 List<String> locations = new ArrayList<String>();
                 locations.addAll(locationsSet);
@@ -229,19 +211,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_spinner_item, locations);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 from_spinner.setAdapter(adapter);
-                }
+            }
 
             @Override
-            public void handleFault(BackendlessFault fault)
-                {
+            public void handleFault(BackendlessFault fault) {
 
-                }
-            });
-        }
+            }
+        });
+    }
 
     @Override
-    public void onClick(View view)
-        {
+    public void onClick(View view) {
         //to prevent crash if spinners are empty
         if (from_spinner.getSelectedItem() == null ||
                 to_spinner.getSelectedItem() == null)
@@ -254,81 +234,69 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause("from = '" + SelectedFrom + "' AND to='" + SelectedTo + "'");
         list = new ArrayList<>();
-        Backendless.Data.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>()
-            {
+        Backendless.Data.of(Routes.class).find(queryBuilder, new AsyncCallback<List<Routes>>() {
             @Override
-            public void handleResponse(List<Routes> response)
-                {
+            public void handleResponse(List<Routes> response) {
 
                 Set<String> locationsSet = new HashSet<>();
-                for (int i = 0; i < response.size(); i++)
-                    {
+                for (int i = 0; i < response.size(); i++) {
                     locationsSet.add(response.get(i).title);
                     list.add(new ResultItem(response.get(i).title, String.valueOf(response.get(i).time) + " min", String.valueOf(response.get(i).fare) + " L.E", response.get(i).description));
 
-                    }
+                }
 
                 recycler_view_adapter = new ResultsAdapter(list, HomeActivity.this);
                 recycler_view.setAdapter(recycler_view_adapter);
 
-                }
+            }
 
             @Override
-            public void handleFault(BackendlessFault fault)
-                {
+            public void handleFault(BackendlessFault fault) {
 
-                }
-            });
+            }
+        });
 
-        }
+    }
 
-    private class NavMenuRecycler extends RecyclerView.Adapter<NavMenuVH>
-        {
+    private class NavMenuRecycler extends RecyclerView.Adapter<NavMenuVH> {
         String[] recyclerItems;
         LayoutInflater inflater;
 
-        NavMenuRecycler(String[] items, Context context)
-            {
+        NavMenuRecycler(String[] items, Context context) {
             recyclerItems = Arrays.copyOf(items, items.length);
             inflater = LayoutInflater.from(context);
-            }
-
-        @Override
-        public NavMenuVH onCreateViewHolder(ViewGroup parent, int viewType)
-            {
-            NavMenuVH view = new NavMenuVH(inflater.inflate(R.layout.side_menu_item, parent, false));
-            return view;
-            }
-
-        @Override
-        public void onBindViewHolder(NavMenuVH holder, int position)
-            {
-            holder.textView.setText(recyclerItems[position]);
-            }
-
-        @Override
-        public int getItemCount()
-            {
-            return recyclerItems.length;
-            }
         }
 
-    private class NavMenuVH extends RecyclerView.ViewHolder implements View.OnClickListener
-        {
+        @Override
+        public NavMenuVH onCreateViewHolder(ViewGroup parent, int viewType) {
+            NavMenuVH view = new NavMenuVH(inflater.inflate(R.layout.side_menu_item, parent, false));
+            return view;
+        }
+
+        @Override
+        public void onBindViewHolder(NavMenuVH holder, int position) {
+            holder.textView.setText(recyclerItems[position]);
+        }
+
+        @Override
+        public int getItemCount() {
+            return recyclerItems.length;
+        }
+    }
+
+    private class NavMenuVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textView;
 
-        NavMenuVH(View itemView)
-            {
+        NavMenuVH(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text1);
             itemView.setOnClickListener(this);
-            }
+        }
 
         @Override
-        public void onClick(View v)
-            {
+        public void onClick(View v) {
             title.setText(textView.getText());
 
-            }
         }
     }
+}

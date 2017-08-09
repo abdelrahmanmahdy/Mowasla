@@ -25,11 +25,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.backendless.Backendless;
+import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 import com.backendless.persistence.BackendlessDataQuery;
 import com.backendless.persistence.DataQueryBuilder;
 import com.overcoffee.internshipapp.Beans.Routes;
+import com.overcoffee.internshipapp.Beans.Users;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     Spinner from_spinner, to_spinner;
     Button resultbutton;
 
-
+    private String username;
     private RecyclerView recycler_view;
     private RecyclerView.Adapter recycler_view_adapter;
     private List list;
@@ -68,7 +70,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
         resultbutton = (Button) findViewById(R.id.searchbutton);
 
-        byte[] img = getIntent().getByteArrayExtra("pp");
+            DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+            queryBuilder.setWhereClause("email = '" + email + "' ");
+            Backendless.Data.of(Users.class).find(queryBuilder, new AsyncCallback<List<Users>>()
+            {
+                @Override
+                public void handleResponse(List<Users> response)
+                {
+                    username = response.get(0).name;
+                }
+
+                @Override
+                public void handleFault(BackendlessFault fault)
+                {
+                    Intent intent = new Intent(HomeActivity.this,SplashActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+
+            byte[] img = getIntent().getByteArrayExtra("pp");
         if (img != null)
             {
             Bitmap bmp = BitmapFactory.decodeByteArray(img, 0, img.length);
@@ -77,8 +98,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         navMenuRecyclerView = (RecyclerView) findViewById(R.id.nav_menu_recycler);
         //Setting data to navigation menu
         emailTV.setText(email);
+        nameTV.setText(username);
         //setting Nav Menu Recycler
-        String[] texts = new String[]{"Text1", "Text2", "Text3", "Text4", "Text5"};
+        String[] texts = new String[]{"AddRoute","Settings","Logout"};
         NavMenuRecycler recycler = new NavMenuRecycler(texts, this);
         navMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         navMenuRecyclerView.setAdapter(recycler);
@@ -306,6 +328,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         public void onClick(View v)
             {
             title.setText(textView.getText());
+
             }
         }
     }

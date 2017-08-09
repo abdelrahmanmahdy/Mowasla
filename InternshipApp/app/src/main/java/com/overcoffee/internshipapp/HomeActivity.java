@@ -79,8 +79,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Intent intent = new Intent(HomeActivity.this, SplashActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -95,7 +93,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         emailTV.setText(email);
 
         //setting Nav Menu Recycler
-        String[] texts = new String[]{"AddRoute", "Settings", "Logout"};
+        String[] texts = new String[]{"Add Route", "Settings", "Logout"};
         NavMenuRecycler recycler = new NavMenuRecycler(texts, this);
         navMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         navMenuRecyclerView.setAdapter(recycler);
@@ -295,8 +293,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public void onClick(View v) {
-            title.setText(textView.getText());
-
+            //title.setText(textView.getText());
+            if(textView.getText() == "Add Route")
+            {
+                Intent intent = new Intent(HomeActivity.this,AddRouteActivity.class);
+                startActivity(intent);
+            }
+            if(textView.getText() == "Logout")
+            {
+                Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }

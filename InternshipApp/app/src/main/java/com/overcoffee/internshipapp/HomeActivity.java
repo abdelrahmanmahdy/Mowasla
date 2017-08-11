@@ -69,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
         resultbutton = (Button) findViewById(R.id.searchbutton);
 
-        String currentUserId=Backendless.UserService.loggedInUser();
+        String currentUserId=Backendless.UserService.CurrentUser().getUserId();
         Backendless.UserService.findById(currentUserId, new AsyncCallback<BackendlessUser>() {
             @Override
             public void handleResponse(BackendlessUser response) {

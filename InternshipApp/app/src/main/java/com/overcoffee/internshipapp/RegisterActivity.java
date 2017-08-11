@@ -252,6 +252,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Backendless.UserService.register(user, new AsyncCallback<BackendlessUser>() {
                         @Override
                         public void handleResponse(BackendlessUser response) {
+                            Backendless.UserService.setCurrentUser(response);
                             Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
                             intent.putExtra("name", nameET.getText().toString());
                             intent.putExtra("email", emailET.getText().toString());

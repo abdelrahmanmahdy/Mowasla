@@ -90,8 +90,6 @@ public class AddRouteActivity extends AppCompatActivity  implements View.OnClick
         label.setText("The New Route Have Been Added Successfully");
         setContentView(label);
 
-        Intent intent=new Intent(AddRouteActivity.this,HomeActivity.class);
-        startActivity(intent);
         finish();
 
         }

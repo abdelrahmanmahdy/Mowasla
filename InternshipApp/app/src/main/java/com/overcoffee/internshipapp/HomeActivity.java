@@ -23,8 +23,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
+import com.backendless.BackendlessUser;
 import com.backendless.UserService;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
@@ -58,7 +60,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         //get data from Intent
-        String email = getIntent().getStringExtra("email");
+        //String email = getIntent().getStringExtra("email");
         //Finding Views
         nameTV = (TextView) findViewById(R.id.name);
         emailTV = (TextView) findViewById(R.id.email);
@@ -67,7 +69,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         to_spinner = (Spinner) findViewById(R.id.to_spinner);
         resultbutton = (Button) findViewById(R.id.searchbutton);
 
-        DataQueryBuilder queryBuilder = DataQueryBuilder.create();
+        String currentUserId=Backendless.UserService.loggedInUser();
+        Backendless.UserService.findById(currentUserId, new AsyncCallback<BackendlessUser>() {
+            @Override
+            public void handleResponse(BackendlessUser response) {
+                nameTV.setText(response.getProperty("name").toString());
+                emailTV.setText(response.getEmail());
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+
+            }
+        });
+
+        /*DataQueryBuilder queryBuilder = DataQueryBuilder.create();
         queryBuilder.setWhereClause("email = '" + email + "' ");
         Backendless.Data.of(Users.class).find(queryBuilder, new AsyncCallback<List<Users>>() {
             @Override
@@ -81,7 +97,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             public void handleFault(BackendlessFault fault) {
             }
         });
-
+*/
 
         byte[] img = getIntent().getByteArrayExtra("pp");
         if (img != null) {
@@ -90,7 +106,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
         navMenuRecyclerView = (RecyclerView) findViewById(R.id.nav_menu_recycler);
         //Setting data to navigation menu
-        emailTV.setText(email);
+        //emailTV.setText(email);
 
         //setting Nav Menu Recycler
         String[] texts = new String[]{"Add Route", "Settings", "Logout"};
@@ -137,42 +153,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //test the results creation///////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
         recycler_view = (RecyclerView) findViewById(R.id.recycler1);
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        //creation of random paths
-        //    list = new ArrayList<>();
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "3/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "2/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "5/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "3/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "4/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "3/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "2/5"));
-//        list.add(new ResultItem("maadi to october to mokkatam", "60 minuites", "5 LE", "test description, test test" +
-//                "test test test test test test test test test test test test test test test test test test", "1/5"));
-
-        //     recycler_view_adapter = new ResultsAdapter(list, this);
-        //  recycler_view.setAdapter(recycler_view_adapter);
-        //     String   SelectedFrom=from_spinner.getSelectedItem().toString();
-        //   String SelectedTo=to_spinner.getSelectedItem().toString();
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 
     public void setupDrawer() {
@@ -294,15 +277,25 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onClick(View v) {
             //title.setText(textView.getText());
-            if(textView.getText() == "Add Route")
-            {
-                Intent intent = new Intent(HomeActivity.this,AddRouteActivity.class);
+            if (textView.getText() == "Add Route") {
+                Intent intent = new Intent(HomeActivity.this, AddRouteActivity.class);
                 startActivity(intent);
             }
-            if(textView.getText() == "Logout")
-            {
-                Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+            if (textView.getText() == "Logout") {
+                Backendless.UserService.logout(new AsyncCallback<Void>() {
+                    @Override
+                    public void handleResponse(Void response) {
+                        Toast.makeText(HomeActivity.this,"user logged out",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void handleFault(BackendlessFault fault) {
+                        Toast.makeText(HomeActivity.this,"sorry something went wrong!",Toast.LENGTH_LONG).show();
+                    }
+                });
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         }
     }

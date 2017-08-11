@@ -21,11 +21,11 @@ import java.util.Map;
 
 import static com.overcoffee.internshipapp.R.id.toolbar;
 
-public class AddRouteActivity extends AppCompatActivity  implements View.OnClickListener {
+public class AddRouteActivity extends AppCompatActivity implements View.OnClickListener {
     Toolbar toolbar2;
     /////finding views
     EditText fromR;
-    EditText toR ;
+    EditText toR;
     EditText titleR;
     EditText fareR;
     EditText distanceR;
@@ -41,20 +41,19 @@ public class AddRouteActivity extends AppCompatActivity  implements View.OnClick
 
         fromR = (EditText) findViewById(R.id.fromroute);
         toR = (EditText) findViewById(R.id.toroute);
-        titleR=(EditText) findViewById(R.id.titleroute);
-        fareR=(EditText) findViewById(R.id.fareroute);
-        distanceR=(EditText) findViewById(R.id.distanceroute);
-        descriptionR=(EditText) findViewById(R.id.descriptionroute);
-        timeR=(EditText) findViewById(R.id.timeroute);
+        titleR = (EditText) findViewById(R.id.titleroute);
+        fareR = (EditText) findViewById(R.id.fareroute);
+        distanceR = (EditText) findViewById(R.id.distanceroute);
+        descriptionR = (EditText) findViewById(R.id.descriptionroute);
+        timeR = (EditText) findViewById(R.id.timeroute);
 
-        addbutton =(Button) this.findViewById(R.id.searchbuttonroute);
+        addbutton = (Button) this.findViewById(R.id.searchbuttonroute);
 
         addbutton.setOnClickListener(this);
-      // setupActionBar();
+        // setupActionBar();
 
 
     }
-
 
 
 //    public void setupActionBar() {
@@ -66,36 +65,36 @@ public class AddRouteActivity extends AppCompatActivity  implements View.OnClick
 //    }
 
 
-
     @Override
     public void onClick(View view) {
 
         ///Create new route
 
-        Routes newroute=new Routes();
-        newroute.from= String.valueOf(fromR.getText());
-        newroute.to=String.valueOf(toR.getText());
-        newroute.title=String.valueOf(titleR.getText());
-        newroute.fare= Double.parseDouble(String.valueOf(fareR.getText()));
-        newroute.distance= Double.parseDouble(String.valueOf(distanceR.getText()));
-        newroute.description=String.valueOf(descriptionR.getText());
-        newroute.time= Integer.parseInt(String.valueOf(timeR.getText()));
+        Routes newroute = new Routes();
+        newroute.from = String.valueOf(fromR.getText());
+        newroute.to = String.valueOf(toR.getText());
+        newroute.title = String.valueOf(titleR.getText());
+        newroute.fare = Double.parseDouble(String.valueOf(fareR.getText()));
+        newroute.distance = Double.parseDouble(String.valueOf(distanceR.getText()));
+        newroute.description = String.valueOf(descriptionR.getText());
+        newroute.time = Integer.parseInt(String.valueOf(timeR.getText()));
 
         //////Add to database
-        Backendless.Persistence.of(Routes.class).save(newroute, new AsyncCallback<Routes>(){
-       @Override
-        public void handleResponse(Routes response) {
+        Backendless.Persistence.of(Routes.class).save(newroute, new AsyncCallback<Routes>() {
+            @Override
+            public void handleResponse(Routes response) {
 
-        TextView label = new TextView(AddRouteActivity.this);
-        label.setText("The New Route Have Been Added Successfully");
-        setContentView(label);
+                TextView label = new TextView(AddRouteActivity.this);
+                label.setText("The New Route Have Been Added Successfully");
+                setContentView(label);
 
-        finish();
+                finish();
 
-        }
+            }
+
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e( "MYAPP", "Server reported an error " + fault.getMessage() );
+                Log.e("MYAPP", "Server reported an error " + fault.getMessage());
             }
         });
     }

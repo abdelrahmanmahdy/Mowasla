@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
@@ -50,37 +51,49 @@ public class AddRouteActivity extends AppCompatActivity implements View.OnClickL
         addbutton = (Button) this.findViewById(R.id.searchbuttonroute);
 
         addbutton.setOnClickListener(this);
-        // setupActionBar();
+        setupActionBar();
 
 
     }
 
 
-//    public void setupActionBar() {
-//
-//        toolbar2 = (Toolbar) findViewById(R.id.toolbar2);
-//        TextView title = (TextView) toolbar2.findViewById(R.id.toolbar_text);
-//        title.setText("Add New Route");
-//        setSupportActionBar(toolbar2);
-//    }
+    public void setupActionBar() {
+
+        toolbar2 = (Toolbar) findViewById(R.id.toolbar2);
+        toolbar2.setTitle("Add New Route");
+        //TextView title = (TextView) toolbar2.findViewById(R.id.toolbar_text2);
+        //title.setText("Add New Route");
+        setSupportActionBar(toolbar2);
+    }
 
 
     @Override
     public void onClick(View view) {
 
         ///Create new route
+        if(fromR.getText().toString().isEmpty() ||
+                toR.getText().toString().isEmpty() ||
+                titleR.getText().toString().isEmpty() ||
+                fareR.getText().toString().isEmpty()||
+                distanceR.getText().toString().isEmpty()||
+                descriptionR.getText().toString().isEmpty()||
+                timeR.getText().toString().isEmpty()){
+            Toast.makeText(this,"Please fill all the fields!!!",Toast.LENGTH_LONG).show();
+            return;
 
-        Routes newroute = new Routes();
-        newroute.from = String.valueOf(fromR.getText());
-        newroute.to = String.valueOf(toR.getText());
-        newroute.title = String.valueOf(titleR.getText());
-        newroute.fare = Double.parseDouble(String.valueOf(fareR.getText()));
-        newroute.distance = Double.parseDouble(String.valueOf(distanceR.getText()));
-        newroute.description = String.valueOf(descriptionR.getText());
-        newroute.time = Integer.parseInt(String.valueOf(timeR.getText()));
+        }
+
+        Routes newRoute = new Routes();
+        newRoute.from = String.valueOf(fromR.getText());
+        newRoute.to = String.valueOf(toR.getText());
+        newRoute.title = String.valueOf(titleR.getText());
+        newRoute.fare = Double.parseDouble(String.valueOf(fareR.getText()));
+        newRoute.distance = Double.parseDouble(String.valueOf(distanceR.getText()));
+        newRoute.description = String.valueOf(descriptionR.getText());
+        newRoute.time = Integer.parseInt(String.valueOf(timeR.getText()));
 
         //////Add to database
-        Backendless.Persistence.of(Routes.class).save(newroute, new AsyncCallback<Routes>() {
+        Backendless.Persistence.of(Routes.class).save(newRoute, new AsyncCallback<Routes>() {
             @Override
             public void handleResponse(Routes response) {
 

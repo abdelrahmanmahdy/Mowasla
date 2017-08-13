@@ -59,8 +59,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        //get data from Intent
-        //String email = getIntent().getStringExtra("email");
         //Finding Views
         nameTV = (TextView) findViewById(R.id.name);
         emailTV = (TextView) findViewById(R.id.email);
@@ -82,22 +80,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-
-        /*DataQueryBuilder queryBuilder = DataQueryBuilder.create();
-        queryBuilder.setWhereClause("email = '" + email + "' ");
-        Backendless.Data.of(Users.class).find(queryBuilder, new AsyncCallback<List<Users>>() {
-            @Override
-            public void handleResponse(List<Users> response) {
-
-                nameTV.setText(response.get(0).name);
-                Log.d("MOWASLA", " " + response.size());
-            }
-
-            @Override
-            public void handleFault(BackendlessFault fault) {
-            }
-        });
-*/
 
         byte[] img = getIntent().getByteArrayExtra("pp");
         if (img != null) {
